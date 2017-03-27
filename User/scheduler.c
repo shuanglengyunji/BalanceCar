@@ -80,6 +80,9 @@ void Duty_5ms(void)
 			Out_Right = Balance_Out_Right;// - direction; //+ Speed_Out_Right;
 		}
 	}
+	
+	printf("左轮：%d    右轮：%d\n",Out_Left,Out_Right);		//临时增加一行轮速调试代码
+	
 	Speed_OutPut(Out_Left,-Out_Right);	//将控制输出数值赋值给电机驱动函数
 }
 
