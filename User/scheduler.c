@@ -40,7 +40,7 @@ void Duty_5ms(void)
 	Get_Speed(&Speed_Left_CM_S,&Speed_Right_CM_S,T);	//读取当前速度
 			
 	//防失控
-	if(Angle.y > 30 || Angle.y < -30)
+	if(Angle.y > 15 || Angle.y < -15)
 	{
 		Out_Left = Out_Right = 0;
 	}

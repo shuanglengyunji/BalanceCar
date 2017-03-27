@@ -112,7 +112,7 @@ void bluetooth_handle(u8 ch)
 						number = number - 100;
 						number = -number;
 					}
-					Desire_Angle = -number;
+//					Desire_Angle = -number;
 					printf("Desire_Angle:%f\n",Desire_Angle);
 					mode = 0;
 				}
