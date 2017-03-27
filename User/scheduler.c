@@ -39,19 +39,21 @@ void Duty_5ms(void)
 	Attitude_sensor_Update(T);							//姿态数据更新
 	Get_Speed(&Speed_Left_CM_S,&Speed_Right_CM_S,T);	//读取当前速度
 			
-	Balance_Control(Angle.y,Gyro.y,&Balance_Out_Left,&Balance_Out_Right,Desire_Angle);			//姿态平衡PID控制
-//	Speed_Control(Speed_Left_CM_S,Speed_Right_CM_S,&Speed_Out_Left,&Speed_Out_Right,0.0f);	//速度PID控制
-	
-	direction = (Speed_Left_CM_S - Speed_Right_CM_S)/6 + mydirection;
-	
-	//正数代表希望向前转，负数代表希望向后转
-	Out_Left  = Balance_Out_Left + direction;  //+ Speed_Out_Left;
-	Out_Right = Balance_Out_Right - direction; //+ Speed_Out_Right;
-	
 	//防失控
 	if(Angle.y > 30 || Angle.y < -30)
 	{
 		Out_Left = Out_Right = 0;
+	}
+	else
+	{
+		Balance_Control(Angle.y,Gyro.y,&Balance_Out_Left,&Balance_Out_Right,Desire_Angle);			//姿态平衡PID控制
+//		Speed_Control(Speed_Left_CM_S,Speed_Right_CM_S,&Speed_Out_Left,&Speed_Out_Right,0.0f);		//速度PID控制
+	
+		direction = (Speed_Left_CM_S - Speed_Right_CM_S)/6 + mydirection;
+	
+		//正数代表希望向前转，负数代表希望向后转
+		Out_Left  = Balance_Out_Left + direction;  //+ Speed_Out_Left;
+		Out_Right = Balance_Out_Right - direction; //+ Speed_Out_Right;
 	}
 	
 	Speed_OutPut(Out_Left,-Out_Right);	//将控制输出数值赋值给电机驱动函数
