@@ -26,6 +26,8 @@ float Speed_Left_CM_S = 0;
 float Speed_Right_CM_S = 0;
 float Desire_Angle = 0;
 s16 mydirection = 0;
+
+extern float error_sum;
 void Duty_5ms(void)
 {
 	u32 T = 5;
@@ -34,32 +36,55 @@ void Duty_5ms(void)
 	s16 Out_Left,Out_Right;					//电机控制量
 	s16 direction = 0;
 	
+	static u16 pickup_flag = 1;	//认为启动时属于被拿起状态
+	static u32 pickup_counter = 0;
 	
 	//PID输出
 	Attitude_sensor_Update(T);							//姿态数据更新
 	Get_Speed(&Speed_Left_CM_S,&Speed_Right_CM_S,T);	//读取当前速度
 			
-	//防失控
-	if(Angle.y > 15 || Angle.y < -15)
+	//角度判断，倾角过大则停机
+	if(Angle.y > 20 || Angle.y < -20)		//角度超出合理范围
 	{
+		//倾角过大
+		
 		Out_Left = Out_Right = 0;
+		error_sum = 0;				//积分量清零
+		pickup_flag = 1;			//认为被拿起
 	}
-	else
+	else									//角度在合理范围内
 	{
-		Balance_Control(Angle.y,Gyro.y,&Balance_Out_Left,&Balance_Out_Right,Desire_Angle);			//姿态平衡PID控制
-//		Speed_Control(Speed_Left_CM_S,Speed_Right_CM_S,&Speed_Out_Left,&Speed_Out_Right,0.0f);		//速度PID控制
-	
-		direction = (Speed_Left_CM_S - Speed_Right_CM_S)/6 + mydirection;
-	
-		//正数代表希望向前转，负数代表希望向后转
-		Out_Left  = Balance_Out_Left + direction;  //+ Speed_Out_Left;
-		Out_Right = Balance_Out_Right - direction; //+ Speed_Out_Right;
+		//判断是否被放下
+		if(pickup_flag == 1)	//角度合理但之前认为被拿起
+		{
+			pickup_counter++;
+			if(pickup_counter > 600 && Angle.y < 10 && Angle.y > -10)	//3s，保持在中间位置
+			{
+				pickup_counter = 0;
+				pickup_flag = 0;	//认为车子没有被拿起
+			}
+			else
+			{
+				pickup_counter = 0;	//没有持续3s或角度不在中间，计时变量清零
+			}
+		}
+		else
+		{
+			//正常运行
+			
+			Balance_Control(Angle.y,Gyro.y,&Balance_Out_Left,&Balance_Out_Right,Desire_Angle);			//姿态平衡PID控制
+//			Speed_Control(Speed_Left_CM_S,Speed_Right_CM_S,&Speed_Out_Left,&Speed_Out_Right,0.0f);		//速度PID控制
+			
+			//正数代表希望向前转，负数代表希望向后转
+			Out_Left  = Balance_Out_Left;// + direction;  //+ Speed_Out_Left;
+			Out_Right = Balance_Out_Right;// - direction; //+ Speed_Out_Right;
+		}
 	}
-	
 	Speed_OutPut(Out_Left,-Out_Right);	//将控制输出数值赋值给电机驱动函数
-//	Speed_OutPut(0,0);	//将控制输出数值赋值给电机驱动函数
-
 }
+
+//	direction = (Speed_Left_CM_S - Speed_Right_CM_S)/6 + mydirection;
+//	Speed_OutPut(0,0);	//将控制输出数值赋值给电机驱动函数
 
 void Duty_10ms(void)
 {
