@@ -117,6 +117,10 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -147,14 +151,14 @@
           <Type>0</Type>
           <LineNumber>49</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134225944</Address>
+          <Address>134226008</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\Users\liuha\Documents\GitHub\BalanceCar\Project\User\Key\bsp_key.c</Filename>
+          <Filename>C:\Users\liuha\Desktop\骞宠　杞?- V2.4.1 钃濈墮+鏂瑰悜淇鐗?Project\User\Key\bsp_key.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\ZE\../../User/Key/bsp_key.c\49</Expression>
         </Bp>
@@ -163,39 +167,33 @@
           <Type>0</Type>
           <LineNumber>47</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134225936</Address>
+          <Address>134226000</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\Users\liuha\Documents\GitHub\BalanceCar\Project\User\Key\bsp_key.c</Filename>
+          <Filename>C:\Users\liuha\Desktop\骞宠　杞?- V2.4.1 钃濈墮+鏂瑰悜淇鐗?Project\User\Key\bsp_key.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\ZE\../../User/Key/bsp_key.c\47</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>63</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134218150</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\Users\liuha\Documents\GitHub\BalanceCar\Project\User\scheduler.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\ZE\../../User/scheduler.c\63</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>pickup_counter</ItemText>
+          <ItemText>ch,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>h</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>number</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

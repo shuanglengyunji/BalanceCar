@@ -10,12 +10,12 @@
 #define _MIN(a, b) 					((a) < (b) ? (a) : (b))
 #define _MAX(a, b) 					((a) > (b) ? (a) : (b))
 
-//typedef struct 
-//{
-//	char x;
-//	char y;
-//	char z;
-//}xyz_char_t;
+typedef struct 
+{
+	char x;
+	char y;
+	char z;
+}xyz_char_t;
 
 typedef struct 
 {

@@ -1,6 +1,6 @@
 #include "attitude_computation.h"
 
-float angle0 = -4;	//初始偏移量校正值，单位是度
+float angle0 = -4.5;	//初始偏移量校正值，单位是度
 
 MPU6050_STRUCT mpu6050;
 MPU6050_OUTPUT_STRUCT mpu6050_output;	//mpu6050数据读取

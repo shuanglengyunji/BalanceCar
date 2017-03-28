@@ -5,7 +5,6 @@
 #include "stdio.h"
 #include "time.h"
 #include "data_transfer.h"
-#include "include.h"
 
 loop_t loop;
 
@@ -28,76 +27,47 @@ float Speed_Right_CM_S = 0;
 float Desire_Angle = 0;
 s16 mydirection = 0;
 
+s16 Out_Left = 0,Out_Right = 0;					//电机控制量
+
+u16 run_flag = 0;
 extern float error_sum;
 void Duty_5ms(void)
 {
 	u32 T = 5;
-	s16 Balance_Out_Left,Balance_Out_Right;	//姿态PID输出
+	s16 Balance_Out_Left = 0,Balance_Out_Right = 0;	//姿态PID输出
 //	s16 Speed_Out_Left,Speed_Out_Right;		//速度PID输出
-	static s16 Out_Left,Out_Right;					//电机控制量
-	s16 direction = 0;
 	
-	static u16 pickup_flag = 1;	//认为启动时属于被拿起状态
-	static u32 pickup_counter;
+	s16 direction = 0;
 	
 	//PID输出
 	Attitude_sensor_Update(T);							//姿态数据更新
 	Get_Speed(&Speed_Left_CM_S,&Speed_Right_CM_S,T);	//读取当前速度
-			
 	
-	printf("角度：%lf\n",Angle.y);		//临时增加一行轮速调试代码
+	if(Angle.y > 20 || Angle.y < -20)
+	{
+		run_flag = 0;
+	}
 	
-//	//角度判断，倾角过大则停机
-//	if(Angle.y > 20 || Angle.y < -20)		//角度超出合理范围
-//	{
-//		//倾角过大
-//		
-//		Out_Left = Out_Right = 0;
-//		error_sum = 0;				//积分量清零
-//		pickup_flag = 1;			//认为被拿起
-//		pickup_counter = 0;
-//	}
-//	else									//角度在合理范围内
-//	{
-//		//判断是否被放下
-//		if(pickup_flag == 1)	//角度合理但之前认为被拿起
-//		{
-//			if(Angle.y < 10 && Angle.y > -10)
-//			{
-//				pickup_counter++;
-//				if(pickup_counter > 600)	//3s，保持在中间位置
-//				{
-//					pickup_counter = 0;
-//					pickup_flag = 0;	//认为车子没有被拿起
-//				}
-//			}
-//			else
-//			{
-//				pickup_counter = 0;	//没有持续3s或角度不在中间，计时变量清零
-//			}
-//		}
-//		else
-//		{
-			//正常运行
-			
-			Balance_Control(Angle.y,Gyro.y,&Balance_Out_Left,&Balance_Out_Right,Desire_Angle);			//姿态平衡PID控制
-//			Speed_Control(Speed_Left_CM_S,Speed_Right_CM_S,&Speed_Out_Left,&Speed_Out_Right,0.0f);		//速度PID控制
-			
-			direction = (Speed_Left_CM_S - Speed_Right_CM_S)/6 + mydirection;
-			
-			//正数代表希望向前转，负数代表希望向后转
-			Out_Left  = Balance_Out_Left + direction;  //+ Speed_Out_Left;
-			Out_Right = Balance_Out_Right - direction; //+ Speed_Out_Right;
-			
-			printf("左轮：%d    右轮：%d\n",Out_Left,Out_Right);		//临时增加一行轮速调试代码
-//		}
-//	}
+	if(run_flag == 1)
+	{
+		Balance_Control(Angle.y,Gyro.y,&Balance_Out_Left,&Balance_Out_Right,Desire_Angle);			//姿态平衡PID控制
+//		Speed_Control(Speed_Left_CM_S,Speed_Right_CM_S,&Speed_Out_Left,&Speed_Out_Right,0.0f);	//速度PID控制
 	
-	Speed_OutPut(Out_Left,-Out_Right);	//将控制输出数值赋值给电机驱动函数
-}
+		direction = (Speed_Left_CM_S - Speed_Right_CM_S)/6 + mydirection;
+	
+		Out_Left  = Balance_Out_Left + direction;
+		Out_Right = Balance_Out_Right - direction;
+		
+		Speed_OutPut(Out_Left,-Out_Right);	//将控制输出数值赋值给电机驱动函数
+	}
+	else
+	{
+		error_sum = 0;
+		angle0 = -4.5;
+		Speed_OutPut(0,0);
+	}
 
-//	
-//	Speed_OutPut(0,0);	//将控制输出数值赋值给电机驱动函数
+}
 
 void Duty_10ms(void)
 {
@@ -111,7 +81,7 @@ void Duty_20ms(void)
 
 void Duty_50ms(void)
 {
-	
+	printf("L:%d \r R:%d\n",Out_Left,Out_Right);
 }
 
 
