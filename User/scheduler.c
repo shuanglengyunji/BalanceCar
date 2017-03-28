@@ -38,7 +38,6 @@ void Duty_5ms(void)
 	static u8 putdown_flag = 0;
 	static u16 putdown_counter = 0;
 	
-	
 	//PID输出
 	Attitude_sensor_Update(T);							//姿态数据更新
 	Get_Speed(&Speed_Left_CM_S,&Speed_Right_CM_S,T);	//读取当前速度
