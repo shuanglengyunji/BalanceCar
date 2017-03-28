@@ -16,35 +16,32 @@ void Duty_1ms(void)
 void Duty_2ms(void)
 {
 	u32 T = 2;
-	Attitude_sensor_Read(T);	//è¯»å–æ•°æ®ï¼Œä½Žé€šæ»¤æ³¢
+	Attitude_sensor_Read(T);	//¶ÁÈ¡Êý¾Ý£¬µÍÍ¨ÂË²¨
 }
 
 
-extern float error_sum_b;
-
-//ç ç›˜è¯»å–é€Ÿåº¦æ•°æ®	
-//å˜é‡æ”¾åœ¨å…¨å±€ï¼Œæ–¹ä¾¿å…¶ä»–çº¿ç¨‹è°ƒç”¨
+//ÂëÅÌ¶ÁÈ¡ËÙ¶ÈÊý¾Ý	
+//±äÁ¿·ÅÔÚÈ«¾Ö£¬·½±ãÆäËûÏß³Ìµ÷ÓÃ
 float Speed_Left_CM_S = 0;
 float Speed_Right_CM_S = 0;
 float Desire_Angle = 0;
 s16 mydirection = 0;
 
-s16 Out_Left = 0,Out_Right = 0;					//ç”µæœºæŽ§åˆ¶é‡
+s16 Out_Left = 0,Out_Right = 0;					//µç»ú¿ØÖÆÁ¿
 
 u16 run_flag = 0;
 extern float error_sum;
 void Duty_5ms(void)
 {
 	u32 T = 5;
-	s16 Balance_Out_Left = 0,Balance_Out_Right = 0;	//å§¿æ€PIDè¾“å‡º
-//	s16 Speed_Out_Left,Speed_Out_Right;		//é€Ÿåº¦PIDè¾“å‡º
+	s16 Balance_Out_Left = 0,Balance_Out_Right = 0;	//×ËÌ¬PIDÊä³ö
+//	s16 Speed_Out_Left,Speed_Out_Right;		//ËÙ¶ÈPIDÊä³ö
 	
 	s16 direction = 0;
 	
-	//PIDè¾“å‡º
-	Attitude_sensor_Update(T);							//å§¿æ€æ•°æ®æ›´æ–°
-	Get_Speed(&Speed_Left_CM_S,&Speed_Right_CM_S,T);	//è¯»å–å½“å‰é€Ÿåº¦
-
+	//PIDÊä³ö
+	Attitude_sensor_Update(T);							//×ËÌ¬Êý¾Ý¸üÐÂ
+	Get_Speed(&Speed_Left_CM_S,&Speed_Right_CM_S,T);	//¶ÁÈ¡µ±Ç°ËÙ¶È
 	
 	if(Angle.y > 20 || Angle.y < -20)
 	{
@@ -53,15 +50,15 @@ void Duty_5ms(void)
 	
 	if(run_flag == 1)
 	{
-		Balance_Control(Angle.y,Gyro.y,&Balance_Out_Left,&Balance_Out_Right,Desire_Angle);			//å§¿æ€å¹³è¡¡PIDæŽ§åˆ¶
-//		Speed_Control(Speed_Left_CM_S,Speed_Right_CM_S,&Speed_Out_Left,&Speed_Out_Right,0.0f);	//é€Ÿåº¦PIDæŽ§åˆ¶
+		Balance_Control(Angle.y,Gyro.y,&Balance_Out_Left,&Balance_Out_Right,Desire_Angle);			//×ËÌ¬Æ½ºâPID¿ØÖÆ
+//		Speed_Control(Speed_Left_CM_S,Speed_Right_CM_S,&Speed_Out_Left,&Speed_Out_Right,0.0f);	//ËÙ¶ÈPID¿ØÖÆ
 	
 		direction = (Speed_Left_CM_S - Speed_Right_CM_S)/6 + mydirection;
 	
 		Out_Left  = Balance_Out_Left + direction;
 		Out_Right = Balance_Out_Right - direction;
 		
-		Speed_OutPut(Out_Left,-Out_Right);	//å°†æŽ§åˆ¶è¾“å‡ºæ•°å€¼èµ‹å€¼ç»™ç”µæœºé©±åŠ¨å‡½æ•°
+		Speed_OutPut(Out_Left,-Out_Right);	//½«¿ØÖÆÊä³öÊýÖµ¸³Öµ¸øµç»úÇý¶¯º¯Êý
 	}
 	else
 	{
@@ -69,9 +66,8 @@ void Duty_5ms(void)
 		angle0 = -4.5;
 		Speed_OutPut(0,0);
 	}
-}
 
-//	Speed_OutPut(0,0);	//å°†æŽ§åˆ¶è¾“å‡ºæ•°å€¼èµ‹å€¼ç»™ç”µæœºé©±åŠ¨å‡½æ•°
+}
 
 void Duty_10ms(void)
 {
@@ -90,10 +86,10 @@ void Duty_50ms(void)
 
 
 //*************************************************************************************
-//è¿è¡Œå‡½æ•°ç»“æŸ
+//ÔËÐÐº¯Êý½áÊø
 
 
-//åˆå§‹åŒ–å‡½æ•°
+//³õÊ¼»¯º¯Êý
 void Loop_Init(void)
 {
 	loop.check_flag = 0;
@@ -111,53 +107,53 @@ void Duty_Loop(void)
 {
 	if(loop.check_flag == 1)
 	{
-		Duty_1ms();							//å‘¨æœŸ1msçš„ä»»åŠ¡
+		Duty_1ms();							//ÖÜÆÚ1msµÄÈÎÎñ
 		
 		if(loop.cnt_2ms >= 2)
 		{
 			loop.cnt_2ms = 0;
-			Duty_2ms();						//å‘¨æœŸ2msçš„ä»»åŠ¡
+			Duty_2ms();						//ÖÜÆÚ2msµÄÈÎÎñ
 		}
 		if( loop.cnt_5ms >= 5 )
 		{
 			loop.cnt_5ms = 0;
-			Duty_5ms();						//å‘¨æœŸ5msçš„ä»»åŠ¡
+			Duty_5ms();						//ÖÜÆÚ5msµÄÈÎÎñ
 		}
 		if( loop.cnt_10ms >= 10 )
 		{
 			loop.cnt_10ms = 0;
-			Duty_10ms();					//å‘¨æœŸ10msçš„ä»»åŠ¡
+			Duty_10ms();					//ÖÜÆÚ10msµÄÈÎÎñ
 		}
 		if( loop.cnt_20ms >= 20 )
 		{
 			loop.cnt_20ms = 0;
-			Duty_20ms();					//å‘¨æœŸ20msçš„ä»»åŠ¡
+			Duty_20ms();					//ÖÜÆÚ20msµÄÈÎÎñ
 		}
 		if( loop.cnt_50ms >= 50 )
 		{
 			loop.cnt_50ms = 0;
-			Duty_50ms();					//å‘¨æœŸ50msçš„ä»»åŠ¡
+			Duty_50ms();					//ÖÜÆÚ50msµÄÈÎÎñ
 		}
 		
-		loop.check_flag = 0;	//è¿è¡Œå®Œæ¯•æ¸…é›¶
+		loop.check_flag = 0;	//ÔËÐÐÍê±ÏÇåÁã
 	}
 }
 
 void Loop_check(void)  //TIME INTTERRUPT
 {
-	//è¿™ä¸ªå†™æ³•å…¶å®žå¹¶ä¸èŠ‚çœæ—¶é—´ï¼Œä½†å¥½åœ¨éƒ½æ˜¯æ•´æ•°æ“ä½œï¼Œåº”è¯¥æ¯”è¾ƒå¿«
-	//å¦‚æžœæ—¶é—´ä¸å¤Ÿäº†å¯ä»¥æŠŠè¿™éƒ¨åˆ†æ”¹æŽ‰ï¼Œæœ‰æ¯”è¿™ä¸ªç®€å•å¾—å¤šçš„å†™æ³•
-	//ç”¨å•ä¸€è®¡æ•°å™¨å˜é‡+å–ä½™æ•°çš„æ–¹æ³•å°±è¡Œ
+	//Õâ¸öÐ´·¨ÆäÊµ²¢²»½ÚÊ¡Ê±¼ä£¬µ«ºÃÔÚ¶¼ÊÇÕûÊý²Ù×÷£¬Ó¦¸Ã±È½Ï¿ì
+	//Èç¹ûÊ±¼ä²»¹»ÁË¿ÉÒÔ°ÑÕâ²¿·Ö¸Äµô£¬ÓÐ±ÈÕâ¸ö¼òµ¥µÃ¶àµÄÐ´·¨
+	//ÓÃµ¥Ò»¼ÆÊýÆ÷±äÁ¿+È¡ÓàÊýµÄ·½·¨¾ÍÐÐ
 	loop.cnt_2ms++;
 	loop.cnt_5ms++;
 	loop.cnt_10ms++;
 	loop.cnt_20ms++;
 	loop.cnt_50ms++;
 	
-	if(loop.check_flag == 1)	//å¦‚æžœåˆ°è¿™é‡Œcheck_flagåˆ°è¿™é‡Œè¿˜æ˜¯1ï¼Œæ²¡æœ‰è¢«æ¸…0ï¼Œ
-								//è¯æ˜Žä¸»å¾ªçŽ¯é‡Œé¢1msçš„ä»»åŠ¡æ²¡æœ‰è¿è¡Œå®Œï¼Œæœ€åŽé¢çš„check_flagæ²¡æœ‰è¿è¡Œåˆ°
+	if(loop.check_flag == 1)	//Èç¹ûµ½ÕâÀïcheck_flagµ½ÕâÀï»¹ÊÇ1£¬Ã»ÓÐ±»Çå0£¬
+								//Ö¤Ã÷Ö÷Ñ­»·ÀïÃæ1msµÄÈÎÎñÃ»ÓÐÔËÐÐÍê£¬×îºóÃæµÄcheck_flagÃ»ÓÐÔËÐÐµ½
 	{
-		loop.error_flag++;		//æ¯æ¬¡å‡ºçŽ°é—®é¢˜ï¼Œerror_flag+1
+		loop.error_flag++;		//Ã¿´Î³öÏÖÎÊÌâ£¬error_flag+1
 	}
 	
 	loop.check_flag = 1;

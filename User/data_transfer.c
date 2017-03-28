@@ -156,11 +156,11 @@ void dataupload(void)
 {
 	static int i = 0;
 	i++;
-	if(i>15)
+	if(i>5)
 	{
 		i = 0;
-		usartsendswitch = 2;
-		printf("L:%f  	R:%f\n",Speed_Left_CM_S,Speed_Right_CM_S);
+		usartsendswitch = 1;
+//		printf("L:%f  	R:%f\n",Speed_Left_CM_S,Speed_Right_CM_S);
 	}
 }
 
