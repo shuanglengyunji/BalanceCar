@@ -52,10 +52,12 @@ void Balance_Control(float Angle_y,float Gyro_y,s16 *Control_Out_Left,s16 *Contr
 	s16 pid_out;
 	
 	error = Expect_Angle_y - Angle_y;	//前倾 -- 正，后仰 -- 负
-	error_sum += error * kib;
+	error_sum += error;
 	error_sum = LIMIT(error_sum,-32767,32767);	//限幅
-	pid_out = kpb * error + error_sum - kdb * Gyro_y;	//PID控制，由于角速度是角度的一阶导数，所以满足pid公式中d项要求，不用除dt，直接乘dt就行了。
+	pid_out = kpb * error + error_sum * kib- kdb * Gyro_y;	//PID控制，由于角速度是角度的一阶导数，所以满足pid公式中d项要求，不用除dt，直接乘dt就行了。
 														//如果前倒，Gyro是负数，但是需要向后仰方向调整，所以前面是负号
+	
+//	pid_out = 0;
 	
 	//希望后仰调整（车辆过度前倾） -- 输出正数		希望前倾调整（车辆过度后仰） -- 输出负数
 	*Control_Out_Left = pid_out;
