@@ -112,7 +112,7 @@ void bluetooth_handle(u8 ch)
 						number = number - 100;
 						number = -number;
 					}
-//					Desire_Angle = -number;
+					Desire_Angle = -number;
 					printf("Desire_Angle:%f\n",Desire_Angle);
 					mode = 0;
 				}
@@ -134,16 +134,14 @@ void bluetooth_handle(u8 ch)
 	}
 }
 
-void dataupload(void)	//在10ms的线程里
+void dataupload(void)
 {
 	static int i = 0;
 	i++;
-	if(i>10)
+	if(i>5)
 	{
 		i = 0;
-		usartsendswitch = 2;	//1：通过串口1发送，2：通过串口2发送
-								//串口1：数传
-								//串口2：蓝牙
+		usartsendswitch = 1;
 //		printf("L:%f  	R:%f\n",Speed_Left_CM_S,Speed_Right_CM_S);
 	}
 }
