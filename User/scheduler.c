@@ -16,32 +16,33 @@ void Duty_1ms(void)
 void Duty_2ms(void)
 {
 	u32 T = 2;
-	Attitude_sensor_Read(T);	//¶ÁÈ¡Êý¾Ý£¬µÍÍ¨ÂË²¨
+	Attitude_sensor_Read(T);	//è¯»å–æ•°æ®ï¼Œä½Žé€šæ»¤æ³¢
 }
 
 
-//ÂëÅÌ¶ÁÈ¡ËÙ¶ÈÊý¾Ý	
-//±äÁ¿·ÅÔÚÈ«¾Ö£¬·½±ãÆäËûÏß³Ìµ÷ÓÃ
+//ç ç›˜è¯»å–é€Ÿåº¦æ•°æ®	
+//å˜é‡æ”¾åœ¨å…¨å±€ï¼Œæ–¹ä¾¿å…¶ä»–çº¿ç¨‹è°ƒç”¨
 float Speed_Left_CM_S = 0;
 float Speed_Right_CM_S = 0;
 float Desire_Angle = 0;
 s16 mydirection = 0;
 
-s16 Out_Left = 0,Out_Right = 0;					//µç»ú¿ØÖÆÁ¿
+s16 Out_Left = 0,Out_Right = 0;					//ç”µæœºæŽ§åˆ¶é‡
 
 u16 run_flag = 0;
 extern float error_sum;
 void Duty_5ms(void)
 {
 	u32 T = 5;
-	s16 Balance_Out_Left = 0,Balance_Out_Right = 0;	//×ËÌ¬PIDÊä³ö
-//	s16 Speed_Out_Left,Speed_Out_Right;		//ËÙ¶ÈPIDÊä³ö
+	s16 Balance_Out_Left = 0,Balance_Out_Right = 0;	//å§¿æ€PIDè¾“å‡º
+//	s16 Speed_Out_Left,Speed_Out_Right;		//é€Ÿåº¦PIDè¾“å‡º
 	
 	s16 direction = 0;
 	
-	//PIDÊä³ö
-	Attitude_sensor_Update(T);							//×ËÌ¬Êý¾Ý¸üÐÂ
-	Get_Speed(&Speed_Left_CM_S,&Speed_Right_CM_S,T);	//¶ÁÈ¡µ±Ç°ËÙ¶È
+
+	//PIDè¾“å‡º
+	Attitude_sensor_Update(T);							//å§¿æ€æ•°æ®æ›´æ–°
+	Get_Speed(&Speed_Left_CM_S,&Speed_Right_CM_S,T);	//è¯»å–å½“å‰é€Ÿåº¦
 	
 	if(Angle.y > 20 || Angle.y < -20)
 	{
@@ -50,15 +51,15 @@ void Duty_5ms(void)
 	
 	if(run_flag == 1)
 	{
-		Balance_Control(Angle.y,Gyro.y,&Balance_Out_Left,&Balance_Out_Right,Desire_Angle);			//×ËÌ¬Æ½ºâPID¿ØÖÆ
-//		Speed_Control(Speed_Left_CM_S,Speed_Right_CM_S,&Speed_Out_Left,&Speed_Out_Right,0.0f);	//ËÙ¶ÈPID¿ØÖÆ
+		Balance_Control(Angle.y,Gyro.y,&Balance_Out_Left,&Balance_Out_Right,Desire_Angle);			//å§¿æ€å¹³è¡¡PIDæŽ§åˆ¶
+//		Speed_Control(Speed_Left_CM_S,Speed_Right_CM_S,&Speed_Out_Left,&Speed_Out_Right,0.0f);	//é€Ÿåº¦PIDæŽ§åˆ¶
 	
 		direction = (Speed_Left_CM_S - Speed_Right_CM_S)/6 + mydirection;
 	
 		Out_Left  = Balance_Out_Left + direction;
 		Out_Right = Balance_Out_Right - direction;
 		
-		Speed_OutPut(Out_Left,-Out_Right);	//½«¿ØÖÆÊä³öÊýÖµ¸³Öµ¸øµç»úÇý¶¯º¯Êý
+		Speed_OutPut(Out_Left,-Out_Right);	//å°†æŽ§åˆ¶è¾“å‡ºæ•°å€¼èµ‹å€¼ç»™ç”µæœºé©±åŠ¨å‡½æ•°
 	}
 	else
 	{
@@ -86,10 +87,10 @@ void Duty_50ms(void)
 
 
 //*************************************************************************************
-//ÔËÐÐº¯Êý½áÊø
+//è¿è¡Œå‡½æ•°ç»“æŸ
 
 
-//³õÊ¼»¯º¯Êý
+//åˆå§‹åŒ–å‡½æ•°
 void Loop_Init(void)
 {
 	loop.check_flag = 0;
@@ -107,53 +108,53 @@ void Duty_Loop(void)
 {
 	if(loop.check_flag == 1)
 	{
-		Duty_1ms();							//ÖÜÆÚ1msµÄÈÎÎñ
+		Duty_1ms();							//å‘¨æœŸ1msçš„ä»»åŠ¡
 		
 		if(loop.cnt_2ms >= 2)
 		{
 			loop.cnt_2ms = 0;
-			Duty_2ms();						//ÖÜÆÚ2msµÄÈÎÎñ
+			Duty_2ms();						//å‘¨æœŸ2msçš„ä»»åŠ¡
 		}
 		if( loop.cnt_5ms >= 5 )
 		{
 			loop.cnt_5ms = 0;
-			Duty_5ms();						//ÖÜÆÚ5msµÄÈÎÎñ
+			Duty_5ms();						//å‘¨æœŸ5msçš„ä»»åŠ¡
 		}
 		if( loop.cnt_10ms >= 10 )
 		{
 			loop.cnt_10ms = 0;
-			Duty_10ms();					//ÖÜÆÚ10msµÄÈÎÎñ
+			Duty_10ms();					//å‘¨æœŸ10msçš„ä»»åŠ¡
 		}
 		if( loop.cnt_20ms >= 20 )
 		{
 			loop.cnt_20ms = 0;
-			Duty_20ms();					//ÖÜÆÚ20msµÄÈÎÎñ
+			Duty_20ms();					//å‘¨æœŸ20msçš„ä»»åŠ¡
 		}
 		if( loop.cnt_50ms >= 50 )
 		{
 			loop.cnt_50ms = 0;
-			Duty_50ms();					//ÖÜÆÚ50msµÄÈÎÎñ
+			Duty_50ms();					//å‘¨æœŸ50msçš„ä»»åŠ¡
 		}
 		
-		loop.check_flag = 0;	//ÔËÐÐÍê±ÏÇåÁã
+		loop.check_flag = 0;	//è¿è¡Œå®Œæ¯•æ¸…é›¶
 	}
 }
 
 void Loop_check(void)  //TIME INTTERRUPT
 {
-	//Õâ¸öÐ´·¨ÆäÊµ²¢²»½ÚÊ¡Ê±¼ä£¬µ«ºÃÔÚ¶¼ÊÇÕûÊý²Ù×÷£¬Ó¦¸Ã±È½Ï¿ì
-	//Èç¹ûÊ±¼ä²»¹»ÁË¿ÉÒÔ°ÑÕâ²¿·Ö¸Äµô£¬ÓÐ±ÈÕâ¸ö¼òµ¥µÃ¶àµÄÐ´·¨
-	//ÓÃµ¥Ò»¼ÆÊýÆ÷±äÁ¿+È¡ÓàÊýµÄ·½·¨¾ÍÐÐ
+	//è¿™ä¸ªå†™æ³•å…¶å®žå¹¶ä¸èŠ‚çœæ—¶é—´ï¼Œä½†å¥½åœ¨éƒ½æ˜¯æ•´æ•°æ“ä½œï¼Œåº”è¯¥æ¯”è¾ƒå¿«
+	//å¦‚æžœæ—¶é—´ä¸å¤Ÿäº†å¯ä»¥æŠŠè¿™éƒ¨åˆ†æ”¹æŽ‰ï¼Œæœ‰æ¯”è¿™ä¸ªç®€å•å¾—å¤šçš„å†™æ³•
+	//ç”¨å•ä¸€è®¡æ•°å™¨å˜é‡+å–ä½™æ•°çš„æ–¹æ³•å°±è¡Œ
 	loop.cnt_2ms++;
 	loop.cnt_5ms++;
 	loop.cnt_10ms++;
 	loop.cnt_20ms++;
 	loop.cnt_50ms++;
 	
-	if(loop.check_flag == 1)	//Èç¹ûµ½ÕâÀïcheck_flagµ½ÕâÀï»¹ÊÇ1£¬Ã»ÓÐ±»Çå0£¬
-								//Ö¤Ã÷Ö÷Ñ­»·ÀïÃæ1msµÄÈÎÎñÃ»ÓÐÔËÐÐÍê£¬×îºóÃæµÄcheck_flagÃ»ÓÐÔËÐÐµ½
+	if(loop.check_flag == 1)	//å¦‚æžœåˆ°è¿™é‡Œcheck_flagåˆ°è¿™é‡Œè¿˜æ˜¯1ï¼Œæ²¡æœ‰è¢«æ¸…0ï¼Œ
+								//è¯æ˜Žä¸»å¾ªçŽ¯é‡Œé¢1msçš„ä»»åŠ¡æ²¡æœ‰è¿è¡Œå®Œï¼Œæœ€åŽé¢çš„check_flagæ²¡æœ‰è¿è¡Œåˆ°
 	{
-		loop.error_flag++;		//Ã¿´Î³öÏÖÎÊÌâ£¬error_flag+1
+		loop.error_flag++;		//æ¯æ¬¡å‡ºçŽ°é—®é¢˜ï¼Œerror_flag+1
 	}
 	
 	loop.check_flag = 1;
