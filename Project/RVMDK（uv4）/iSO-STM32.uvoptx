@@ -118,6 +118,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
+          <Name>/</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -151,14 +152,14 @@
           <Type>0</Type>
           <LineNumber>49</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134226008</Address>
+          <Address>134225676</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\Users\liuha\Desktop\骞宠　杞?- V2.4.1 钃濈墮+鏂瑰悜淇鐗?Project\User\Key\bsp_key.c</Filename>
+          <Filename>D:\technology\骞宠　灏忚溅鍒朵綔\3.5鐗堟湰宸ョ▼鏂囦欢 鏀硅嚜閲庣伀ISO渚嬬▼\骞宠　杞?Project\User\Key\bsp_key.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\ZE\../../User/Key/bsp_key.c\49</Expression>
         </Bp>
@@ -167,14 +168,14 @@
           <Type>0</Type>
           <LineNumber>47</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134226000</Address>
+          <Address>134225668</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\Users\liuha\Desktop\骞宠　杞?- V2.4.1 钃濈墮+鏂瑰悜淇鐗?Project\User\Key\bsp_key.c</Filename>
+          <Filename>D:\technology\骞宠　灏忚溅鍒朵綔\3.5鐗堟湰宸ョ▼鏂囦欢 鏀硅嚜閲庣伀ISO渚嬬▼\骞宠　杞?Project\User\Key\bsp_key.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\ZE\../../User/Key/bsp_key.c\47</Expression>
         </Bp>
