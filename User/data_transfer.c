@@ -78,6 +78,15 @@ void bluetooth_handle(u8 ch)
 	{
 		run_flag = 1;
 	}
+	else if(ch == 'e')	//×ó×ª
+	{
+		
+	}
+	else if(ch == 'f')	//ÓÒ×ª
+	{
+		
+	}
+	
 }
 
 
