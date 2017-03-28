@@ -54,6 +54,7 @@ int fgetc(FILE *f)
 
 //**********************************************************************************************
 
+extern u16 run_flag;
 void bluetooth_handle(u8 ch)
 {
 	static int counter = 0;
@@ -61,88 +62,105 @@ void bluetooth_handle(u8 ch)
 	static int mode = 0;
 	float number;
 
-	if(ch == 'a')	//原始角度微调
+	if(ch == 'a')	//前
 	{
 		angle0 += 0.4;
 	}
-	else if(ch == 'b')
+	else if(ch == 'b')	//后
 	{
-		angle0 -= 0.4;
+		angle0 -= 0.6;
 	}
-	else if(ch == 'c')	//控制角度输入
+	else if(ch == 'c')	//停转
 	{
-		mode = 1;
+		run_flag = 0;
 	}
-	else if(ch == 'd')
+	else if(ch == 'd')	//启动
 	{
-		mode = 2;
-	}
-	else if(ch == 'e')
-	{
-		
-	}
-	else if( (ch <= 0x39)  &&  (ch >= 0x30) )	//传入的是数字
-	{
-		switch(counter)
-		{
-			case 0:
-				receivetable[0] = (int)ch;
-				counter = 1;
-				break;
-			case 1:
-				receivetable[1] = ch;
-				counter = 2;
-				break;
-			case 2:
-				receivetable[2] = ch;
-				counter = 3;	
-				break;
-			case 3:
-				receivetable[3] = ch;
-				counter = 4;	
-				break;				
-			case 4:
-				receivetable[4] = ch;
-				number = (receivetable[0]-0x30)*100 + (receivetable[1]-0x30)*10 + (receivetable[2]-0x30) + (receivetable[3]-0x30)*0.1 + (receivetable[4]-0x30)*0.01;
-				
-				if(mode == 1)
-				{
-					if(number >= 100)
-					{
-						number = number - 100;
-						number = -number;
-					}
-					Desire_Angle = -number;
-					printf("Desire_Angle:%f\n",Desire_Angle);
-					mode = 0;
-				}
-				if(mode == 2)
-				{
-					if(number >= 100)
-					{
-						number = number - 100;
-						number = -number;
-					}
-					mydirection = mydirection + number;
-					mode = 0;
-				}
-				counter = 0;
-				break;
-			default:
-				break;
-		}
+		run_flag = 1;
 	}
 }
+
+//	if(ch == 'a')	//原始角度微调
+//	{
+//		angle0 += 0.4;
+//	}
+//	else if(ch == 'b')
+//	{
+//		angle0 -= 0.4;
+//	}
+//	else if(ch == 'c')	//控制角度输入
+//	{
+//		mode = 1;
+//	}
+//	else if(ch == 'd')
+//	{
+//		mode = 2;
+//	}
+//	else if(ch == 'e')
+//	{
+//		
+//	}
+//	else if( (ch <= 0x39)  &&  (ch >= 0x30) )	//传入的是数字
+//	{
+//		switch(counter)
+//		{
+//			case 0:
+//				receivetable[0] = (int)ch;
+//				counter = 1;
+//				break;
+//			case 1:
+//				receivetable[1] = ch;
+//				counter = 2;
+//				break;
+//			case 2:
+//				receivetable[2] = ch;
+//				counter = 3;	
+//				break;
+//			case 3:
+//				receivetable[3] = ch;
+//				counter = 4;	
+//				break;				
+//			case 4:
+//				receivetable[4] = ch;
+//				number = (receivetable[0]-0x30)*100 + (receivetable[1]-0x30)*10 + (receivetable[2]-0x30) + (receivetable[3]-0x30)*0.1 + (receivetable[4]-0x30)*0.01;
+//				
+//				if(mode == 1)
+//				{
+//					if(number >= 100)
+//					{
+//						number = number - 100;
+//						number = -number;
+//					}
+//					Desire_Angle = -number;
+//					printf("Desire_Angle:%f\n",Desire_Angle);
+//					mode = 0;
+//				}
+//				if(mode == 2)
+//				{
+//					if(number >= 100)
+//					{
+//						number = number - 100;
+//						number = -number;
+//					}
+//					mydirection = mydirection + number;
+//					mode = 0;
+//				}
+//				counter = 0;
+//				break;
+//			default:
+//				break;
+//		}
+//	}
 
 void dataupload(void)
 {
 	static int i = 0;
 	i++;
-	if(i>15)
+	if(i>5)
 	{
 		i = 0;
-		usartsendswitch = 2;
-		printf("L:%f  	R:%f\n",Speed_Left_CM_S,Speed_Right_CM_S);
+		usartsendswitch = 1;
+//		printf("L:%f  	R:%f\n",Speed_Left_CM_S,Speed_Right_CM_S);
 	}
 }
 
