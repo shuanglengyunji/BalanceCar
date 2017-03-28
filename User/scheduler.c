@@ -38,7 +38,6 @@ void Duty_5ms(void)
 //	s16 Speed_Out_Left,Speed_Out_Right;		//速度PID输出
 	
 	s16 direction = 0;
-	
 
 	//PID输出
 	Attitude_sensor_Update(T);							//姿态数据更新
